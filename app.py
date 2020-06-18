@@ -1,39 +1,23 @@
-from flask import Flask, render_template, url_for, request, redirect
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from flask import Flask, render_template, request, url_for
+import weather_scraper
+
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-db = SQLAlchemy(app)
 
-class Todo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(200), nullable=False)
-    completed = db.Column(db.Integer, default=0)
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return '<Task %r>' % self.id
+#Latitude and longitude inputs
+lat_ex = '37.5'
+lon_ex = '-76.3'
 
 
-@app.route('/', methods=['POST', 'GET'])
-def index():
-    if request.method == 'POST':
-        task_content = request.form['content']
-        new_task = Todo(content=task_content)
+@app.route('/')
+def hello_world():
+    return 'add /tidesHome'
 
-        try:
-            db.session.add(new_task)
-            db.session.commit()
-            return redirect('/')
-        except:
-            return 'There was an issue adding your task'
-    else:
-        tasks = Todo.query.order_by(Todo.date_created).all()
-        return render_template('index.html', tasks=tasks)
+@app.route('/weather')
+def weather():
+    return weather_scraper.weath(lat_ex, lon_ex)
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
+@app.route('/tidesHome')
+def tide_world():
+    return render_template('tide.html')
 
