@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html'%}
+{% block title %}
+    Tide Home Page
+{% endblock %}
+
+
+{% block content %}
+
+<h1> York River </h1>
+
+
+<p> Current Weather: {{ weather }} </p>
+
+<p> Current Wind: {{ wind }} mph {{ windDir }}</p>
+
+{% endblock %}
+</html>
